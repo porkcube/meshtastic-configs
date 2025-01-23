@@ -40,8 +40,8 @@ It deals with basically every mistake I could make/edge case I encountered, and 
 ~~Super~~ Some-what simple:
 - clone your forked repo and change directory to it:
 ```
-git clone https://github.com/(yourgithubusername)/meshtastic-config-manager
-cd meshtastic-config-manager
+git clone https://github.com/(yourgithubusername)/meshtastic-configs
+cd meshtastic-configs
 ```
 - configure `sops` [with your desired encryption scheme](https://github.com/getsops/sops?tab=readme-ov-file#usage)
   - example using `age`:

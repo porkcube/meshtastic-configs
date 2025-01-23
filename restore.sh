@@ -41,7 +41,7 @@ sops -d -i "${file}"
 ## apply config
 meshtastic --config "${file}"
 
-## reecrypt inplace config file
+## reencrypt inplace config file
 sops -e -i "${file}"
 
 ## double-check device's config

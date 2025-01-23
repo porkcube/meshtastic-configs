@@ -18,13 +18,13 @@ if [[ ! -f ".sops.yaml" ]]; then
     exit 0
 fi
 
-## dump entire cfg
+## dump entire cfg while suppressing stderr
 meshtastic --export-config > /tmp/config.yaml 2>/dev/null
 
 ## verify we have a meshtastic config.yaml and not some stderr dump
 if [[ "$(grep -c '# start of Meshtastic configure yaml' /tmp/config.yaml)" == 0 ]]; then
     echo "Exported config invalid, attempting further diagnosis..."
-    ## check dev path depending on OS and use exit code via $? as verification
+    ## check device path depending on OS and use exit code via $? as verification
     arch="$(uname -s)"
     if [[ "${arch}" == "Darwin" ]]; then
         exitCode="$(ls /dev/cu.usbmodem* 2>/dev/null; echo $?)"
@@ -44,10 +44,8 @@ fi
 owner_short="$(grep owner_short /tmp/config.yaml | awk '{print $2}' | tr -d \")"
 
 ## detect if owner_short is emoji to handle shenanigans
-# isEmoji="$(grep -c 'owner_short: \"\\U000' /tmp/config.yaml)"
-# if [[ ! "${isEmojio}" == 0 ]]; then
 if [[ ! "$(grep -c 'owner_short: \"\\U000' /tmp/config.yaml)" == 0 ]]; then
-    ## perl magic to rewrite the emoji's hex' as an emoji
+    ## perl magic to rewrite the emoji's hex as an actual emoji
     owner_short="$(perl -CO -plE 's/\\u(\p{Hex}+)/chr(hex($1))/xieg' <<< ${owner_short})"
 fi
 
