@@ -51,7 +51,7 @@ fi
 
 ## confirm overwriting existing config
 if [[ -f "${owner_short}_config.yaml" ]]; then
-    read -n 1 -p "file exists, ok to overwrite? [y/n] " overwriteConfirm
+    read -n 1 -p "${owner_short}_config.yaml exists, ok to overwrite? [y/n] " overwriteConfirm
     echo "" # read doesn't create newline
     case "${overwriteConfirm}" in
         y|Y)
@@ -75,6 +75,17 @@ if [[ $(grep -c1 'owner_short: "' /tmp/config.yaml) -eq 0 ]]; then
     rm -f /tmp/config.yaml
 else
     mv /tmp/config.yaml "${owner_short}_config.yaml"
+fi
+
+## determine firmware and device state
+metadata="$(meshtastic --device-metadata 2>/dev/null)"
+firmware="$(echo "${metadata}"|grep firmware_version|awk '{print $2}')"
+device_state="$(echo "${metadata}"|grep device_state_version|awk '{print $2}')"
+## make sure neither is blank/empty
+if [[ "${firmware}" == "" ]] || [[ "${device_state}" == "" ]]; then
+    echo "Unable to determine firmware version and device state, omitting from config file"
+else ## append them to config file
+    echo "# firmware: ${firmware} | state = ${device_state}" >> "${owner_short}_config.yaml"
 fi
 
 ## encrypt inplace (encrypted_regex values from .sops.yaml) ~ channel_url bluetooth.fixedPin security.privateKey mqtt.username/passwd
