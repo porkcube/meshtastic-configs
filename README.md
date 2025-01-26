@@ -80,6 +80,7 @@ creation_rules:
 This will create a `sops` encrypted file named `(owner_short)_config.yaml` (e.g. `PRK1_config.yaml`).
 The `owner_short` name will be extracted from the existing config (emojis should work, they do for me) and explicitly double-quoted as `sops` may misinterpret certain ambiguous strings (e.g. `18e7`, edge case which so happened to be the node used while developing most of this).
 The resulting file can be considered safe to commit/share publicly as only the "sensitive" information has been encrypted with the private key.
+It will also add a comment at the end of the yaml with the device's current `firmware_version` and `device_state`.
 
 The following "sensitive" values will be obfuscated if present (i.e. the `encrypted_regex` in `.sops.yaml`):
 - `channel_url`
@@ -107,3 +108,11 @@ The node will automatically reboot at the end of this process.
 `sops` will use your `$EDITOR` env if defined, otherwise default to `vi` (`esc`+`:q!`+`Enter` to exit out if you quickly ran the command without reading ahead).
 You can also run `sops -d -i (owner_short)_config.yaml` to decrypt the file, open it your preferred cli or gui editor and have at, then run
 `sops -e -i (owner_short)_config.yaml` once completed to ensure it's encrypted before committing with `git`.
+
+# Extending
+
+If you want to add or remove any key(s) from being encrypted, such as the `adminKey` array (because you're more paranoid than I) simple add them to the `encrypted_regex` in `.sops.yaml`:
+- before: `encrypted_regex: channel_url|fixedPin|privateKey|password|username`
+- after : `encrypted_regex: channel_url|fixedPin|adminKey|privateKey|password|username`
+
+And then run : `sops -d -i file.yaml && sops -e -i file.yaml` to decrypt then reencrypt the file with the updated keys.
