@@ -1,7 +1,3 @@
-my personal [meshtastic](https://meshtastic.org/) radio node configurations backups / personal fork of https://github.com/porkcube/meshtastic-configs
-
-<hr />
-
 # Meshtastic Configs
 
 A fancy pants (read: convoluted/gitopsy) semi-automated way to safely and securely manage [meshtastic](https://meshtastic.org/) node `config.yaml` file(s) with `git` +
