@@ -1,3 +1,7 @@
+my personal [meshtastic](https://meshtastic.org/) radio node configurations backups / personal fork of https://github.com/porkcube/meshtastic-configs
+
+<hr />
+
 # Meshtastic Configs
 
 A fancy pants (read: convoluted/gitopsy) semi-automated way to safely and securely manage [meshtastic](https://meshtastic.org/) node `config.yaml` file(s) with `git` +
@@ -5,7 +9,7 @@ A fancy pants (read: convoluted/gitopsy) semi-automated way to safely and secure
 
 # This works most reliably on a fresh, fully erased node.
 #### Trying to run `restore.sh` on an already configured node is not guaranteed to fully work, and likely require multiple runs before configuration is completely applied, if it even fully applies.
-Nobody is perfect and any changed configuration value could not "stick" for any number of reasons, including `LFS` corruption from repeatedly trying to change the config (happened to me) hence the recommendation to use a fully erased node for best results.
+Nobody is perfect and [any changed configuration value could not "stick" for any number of reasons](https://github.com/meshtastic/firmware/issues/5640), including [`LFS` corruption](https://github.com/meshtastic/firmware/issues/5839) from repeatedly trying to change the config (happened to me) hence the recommendation to use a fully erased node for best results.
 
 
 #### That said, it works well for my own needs with that caveat, which is why I slapped it together.
